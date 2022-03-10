@@ -78,7 +78,7 @@ def test_filter_message_by_received_status(process, messages_dummy):
 
 
 def test_filter_message_by_date(process, messages_dummy):
-    message_filtered_by_date_df = process.filter_message_by_date(messages_dummy)
+    message_filtered_by_date_df = process.filter_message_by_date_sent(messages_dummy)
     assert message_filtered_by_date_df.filter(col("date_sent") != "2021-01-31").count() == 0
 
 

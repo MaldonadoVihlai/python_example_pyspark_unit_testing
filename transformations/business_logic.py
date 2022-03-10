@@ -14,7 +14,16 @@ class BusinessLogic:
         """
         return messages_df.filter(col("status") == "received")
 
-    def filter_message_by_date(self, messages_df):
+    def format_message_dates(self, messages_df):
+        """
+        Format date_sent and date_created columns to yyyy-MM-dd
+        :param messages_df: Messages DataFrame
+        :return: DataFrame with date_sent and date_created formatted to yyyy-MM-dd
+        """
+        return messages_df.withColumn("date_sent", from_unixtime(substring(col("date_sent"), 1, 10), "yyyy-MM-dd")) \
+            .withColumn("date_created", from_unixtime(substring(col("date_created"), 1, 10), "yyyy-MM-dd"))
+
+    def filter_message_by_date_sent(self, messages_df):
         """
         Filter the column date_sent from the message DataFrame
         :param messages_df: Messages DataFrame
@@ -30,6 +39,3 @@ class BusinessLogic:
         :return: Joined DataFrame
         """
         return messages_df.join(customer_tables_df, "client_id")
-
-    def group_messages_by_customer(self, messages_df):
-        return messages_df.groupBy("")
